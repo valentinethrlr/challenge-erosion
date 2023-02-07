@@ -1,42 +1,26 @@
-img2ascii(img_data: list[list[int]], black: str, white: str) -> str:
+def img2ascii(img_data: list[list[int]], black: str = '#', white: str = '.') -> str:
     '''
-    >>> img = [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
-        [0, 1, 1, 0, 0, 0, 0, 1, 1, 0],
-        [0, 1, 0, 0, 0, 0, 0, 0, 1, 0],
-        [0, 1, 0, 0, 0, 0, 0, 0, 1, 0],
-        [0, 1, 0, 0, 0, 0, 0, 0, 1, 0],
-        [0, 1, 0, 0, 0, 0, 0, 0, 1, 0],
-        [0, 1, 1, 0, 0, 0, 0, 1, 1, 0],
-        [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ])
-    >>> img2ascii(img)
-    '..........\n..######..\n.##....##.\n.#......#.\n.#......#.\n.#......#.\n.#......#.\n.##....##.\n..######..\n..........'
-    >>> print(img2ascii(img))
-    ..........
-    ..######..
-    .##....##.
-    .#......#.
-    .#......#.
-    .#......#.
-    .#......#.
-    .##....##.
-    ..######..
-    ..........
-    >>> print(img2ascii(img, 'O', ' '))
-    000000
-    00    00
-    0      0
-    0      0
-    0      0
-    0      0
-    00    00
-    000000
+    Change the image in list in an image in string
     '''
-    ...
-    ...
 
-import doctest
-doctest.testmode
+    img_string: str = ''
+    for line in img_data:
+        for char in line:
+            if char == 1:
+                img_string += black
+            else:
+                img_string += white
+        img_string += "\n"
+    img_string = img_string[:-1]
+
+    return img_string
+
+    ''.join([black for char in [line for line in img_data] if char == '1' else white] + ['\n'])
+
+
+
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod
+

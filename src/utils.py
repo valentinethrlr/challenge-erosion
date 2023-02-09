@@ -30,5 +30,4 @@ def split_list(data: list, line: int, row: int) -> list[list[int]]:
         final_list += [current_list]
         current_list = []
     return final_list   
-   
-print(load_pbm('circle-nb-3.pbm'))
+

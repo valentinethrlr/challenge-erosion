@@ -4,7 +4,6 @@ def img2ascii(img_data: list[list[int]], black: str = '#', white: str = '.') -> 
     '''
     return ''.join([''.join([black if char == 1 else white for char in line] + ['\n']) for line in img_data])[:-1]
 
-
 def load_pbm(filename: str) -> list[list[int]]:
     '''
     load the data in the file and return it in a list form
@@ -20,14 +19,11 @@ def load_pbm(filename: str) -> list[list[int]]:
     return final_list
 
 def split_list(data: list, line: int, row: int) -> list[list[int]]:
-    i: int = 0
-    current_list = []
-    final_list = []
-    for _ in range(line):
-        for _ in range(row):
-            current_list += [int(data[i])]
-            i += 1
-        final_list += [current_list]
-        current_list = []
+    final_list = [[None for _ in range(row)] for _ in range(line)]
+    for i in range(line):
+        for j in range(row):
+            final_list[i][j] = int(data[i*row + j])
+    
     return final_list   
+   
 

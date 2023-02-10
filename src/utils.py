@@ -42,18 +42,23 @@ def erosion(img: list[list[int]], n: int) -> list[list[int]]:
     line = len(data)
     row = len(data[0])
     for _ in range(n):
-        for i in line:
-            for j in row:
+        to_change = []
+        for i in range(line):
+            for j in range(row):
                 if data[i][j] == 1:
                     positions = surrounding(i, j)
                     for position in positions:
-                        if data[position] == 0:
-                            data[i][j] = 0
-    data = img2ascii(data)
-    return data
+                        n_line, n_row = position
+                        if n_line not in range(line) or n_row not in range(row) or data[n_line][n_row] == 0:
+                            to_change += [[i, j]]
+        for position in to_change:
+            data[position[0]][position[1]] = 0
+                        
+    return img2ascii(data)
 
 
 def surrounding(i: int, j: int):
     return [[i - 1, j - 1], [i + 1, j - 1], [i - 1, j + 1], [i + 1, j + 1]]
+
 
 

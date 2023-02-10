@@ -1,6 +1,6 @@
 def img2ascii(img_data: list[list[int]], black: str = "#", white: str = ".") -> str:
     """
-    Change the image in list in an image in string
+    Transforme the image data in form of a list in a string
     """
     return "".join(
         [
@@ -49,16 +49,17 @@ def erosion(img: list[list[int]], n: int) -> list[list[int]]:
                     positions = surrounding(i, j)
                     for position in positions:
                         n_line, n_row = position
-                        if n_line not in range(line) or n_row not in range(row) or data[n_line][n_row] == 0:
+                        if (
+                            n_line not in range(line)
+                            or n_row not in range(row)
+                            or data[n_line][n_row] == 0
+                        ):
                             to_change += [[i, j]]
         for position in to_change:
             data[position[0]][position[1]] = 0
-                        
     return img2ascii(data)
 
 
 def surrounding(i: int, j: int):
     return [[i - 1, j - 1], [i + 1, j - 1], [i - 1, j + 1], [i + 1, j + 1]]
-
-
 

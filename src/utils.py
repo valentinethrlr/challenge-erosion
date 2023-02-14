@@ -44,14 +44,14 @@ def positions_to_change(data_line: list[int], n_line: int) -> list[int]:
         positions_to_consider = surrounding(n_line, i)
         for position in positions_to_consider:
             line, row = position
-            return controll(line, row, len_line, len_row)
+            return controll(data_line, line, row, len_line, len_row)
 
-def controll(line: int, row: int, len_line: int, len_row: int) -> None or list[int]:
+def controll(data_line: list[int], line: int, row: int, len_line: int, len_row: int) -> None or list[int]:
     if line not in range(len_line) or row not in range(len_row) or data_line[row] == 0:
         return [line, row]
     
 def n_step(img: list[list[int]], len_line: int, len_row: int):
-    changes:list[list[int]] = []
+    changes: list[list[int]] = []
     for i in range(len_line):
         changes += positions_to_change(data[i], i) 
     
@@ -60,40 +60,11 @@ def erosion(img: list[list[int]], n: int) -> list[list[int]]:
     len_line: int = len(data)
     len_row: int = len(data[0])
     for _ in range(n):
-        n_postitions_to_change = n_step(img, len_line, len_row)
-            
-        for position in to_change:
-            data[position[0]][position[1]] = 0
+        n_postitions_to_change = n_step(img, len_line, len_row)    
+        for position in n_postitions_to_change:
+            i, j = position
+            data[i, j] = 0
     return data
-
-
-
-
-
-
-              
-def erosion(img: list[list[int]], n: int) -> list[list[int]]:
-    data = img
-    len_line = len(data)
-    len_row = len(data[0])
-    for _ in range(n):
-        to_change = []
-        for i in range(line):
-            for j in range(row):
-                if data[i][j] == 1:
-                    positions = surrounding(i, j)
-                    for position in positions:
-                        n_line, n_row = position
-                        if (
-                            n_line not in range(line)
-                            or n_row not in range(row)
-                            or data[n_line][n_row] == 0
-                        ):
-                            to_change += [[i, j]]
-        for position in to_change:
-            data[position[0]][position[1]] = 0
-    return data
-
 
 zoom = 0.5
 img = load_pbm("cross.pbm")

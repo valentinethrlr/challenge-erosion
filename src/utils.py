@@ -39,18 +39,39 @@ def split_list(data: list, line: int, row: int) -> list[list[int]]:
 def surrounding(i: int, j: int):
     return [[i - 1, j - 1], [i + 1, j - 1], [i - 1, j + 1], [i + 1, j + 1]]
 
-def positions_to_change(n_line: int) -> list[int]:
+def positions_to_change(data_line: list[int], n_line: int) -> list[int]:
     for i in range(n_line):
         positions_to_consider = surrounding(n_line, i)
         for position in positions_to_consider:
             line, row = position
-            controll(line, row)
+            return controll(line, row, len_line, len_row)
 
 def controll(line: int, row: int, len_line: int, len_row: int) -> None or list[int]:
+    if line not in range(len_line) or row not in range(len_row) or data_line[row] == 0:
+        return [line, row]
     
+def n_step(img: list[list[int]], len_line: int, len_row: int):
+    changes:list[list[int]] = []
+    for i in range(len_line):
+        changes += positions_to_change(data[i], i) 
+    
+def erosion(img: list[list[int]], n: int) -> list[list[int]]:
+    data = img
+    len_line: int = len(data)
+    len_row: int = len(data[0])
+    for _ in range(n):
+        n_postitions_to_change = n_step(img, len_line, len_row)
+            
+        for position in to_change:
+            data[position[0]][position[1]] = 0
+    return data
+
+
+
+
+
 
               
-
 def erosion(img: list[list[int]], n: int) -> list[list[int]]:
     data = img
     len_line = len(data)

@@ -36,11 +36,25 @@ def split_list(data: list, line: int, row: int) -> list[list[int]]:
         current_list = []
     return final_list
 
+def surrounding(i: int, j: int):
+    return [[i - 1, j - 1], [i + 1, j - 1], [i - 1, j + 1], [i + 1, j + 1]]
+
+def positions_to_change(n_line: int) -> list[int]:
+    for i in range(n_line):
+        positions_to_consider = surrounding(n_line, i)
+        for position in positions_to_consider:
+            line, row = position
+            controll(line, row)
+
+def controll(line: int, row: int, len_line: int, len_row: int) -> None or list[int]:
+    
+
+              
 
 def erosion(img: list[list[int]], n: int) -> list[list[int]]:
-    data = load_pbm(img)
-    line = len(data)
-    row = len(data[0])
+    data = img
+    len_line = len(data)
+    len_row = len(data[0])
     for _ in range(n):
         to_change = []
         for i in range(line):
@@ -57,9 +71,9 @@ def erosion(img: list[list[int]], n: int) -> list[list[int]]:
                             to_change += [[i, j]]
         for position in to_change:
             data[position[0]][position[1]] = 0
-    return img2ascii(data)
+    return data
 
 
-def surrounding(i: int, j: int):
-    return [[i - 1, j - 1], [i + 1, j - 1], [i - 1, j + 1], [i + 1, j + 1]]
-
+zoom = 0.5
+img = load_pbm("cross.pbm")
+print(img2ascii(img))

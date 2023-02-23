@@ -1,3 +1,6 @@
+from copy import deepcopy
+
+
 def img2ascii(img_data: list[list[int]], black: str = "#", white: str = ".") -> str:
     """
     Transforme the image data in form of a list in a string
@@ -36,35 +39,43 @@ def split_list(data: list, line: int, row: int) -> list[list[int]]:
         current_list = []
     return final_list
 
-def surrounding(i: int, j: int):
-    return [[i - 1, j - 1], [i + 1, j - 1], [i - 1, j + 1], [i + 1, j + 1]]
 
-def positions_to_change(data_line: list[int], n_line: int) -> list[int]:
-    for i in range(n_line):
-        positions_to_consider = surrounding(n_line, i)
-        for position in positions_to_consider:
-            line, row = position
-            return controll(data_line, line, row, len_line, len_row)
+def surrounding(line: int, row: int):
+    return [[line - 1, row], [line + 1, row], [line, row - 1], [line, row + 1]]
 
-def controll(data_line: list[int], line: int, row: int, len_line: int, len_row: int) -> None or list[int]:
-    if line not in range(len_line) or row not in range(len_row) or data_line[row] == 0:
-        return [line, row]
-    
-def n_step(img: list[list[int]], len_line: int, len_row: int):
-    changes: list[list[int]] = []
-    for i in range(len_line):
-        changes += positions_to_change(data[i], i) 
-    
+def delete_first_last_line(line_to_delete :int, img: list[list[int]], nb_line: int, nb_row:int) -> list[list[int]]:
+    for elem_row in range(nb_row):
+            img[line_to_delete][elem_row] = 0
+            img[nb_line-line_to_delete-1][elem_row] = 0
+            
+def delete_positions(considered_positions:list[list[int]], elem_line: int, elem_row: int, img:list[list[int]], copy_img: list[list[int]]) -> list[list[int]]:
+    for position in considered_positions:
+                        considered_line, considered_row = position
+                        if(copy_img[considered_line][considered_row]==0):
+                            img[elem_line][elem_row] = 0
+                            break
+
+def check_positions(nb_row: int, i: int, elem_line:int, img: list[list[int]], copy_img: list[list[int]]) -> None:
+    for elem_row in range(i+1, nb_row-i-1):
+        if img[elem_line][elem_row] == 1:
+            considered_positions = surrounding(elem_line, elem_row)
+            delete_positions(considered_positions, elem_line, elem_row, img, copy_img)
+            
+
 def erosion(img: list[list[int]], n: int) -> list[list[int]]:
-    data = img
-    len_line: int = len(data)
-    len_row: int = len(data[0])
-    for _ in range(n):
-        n_postitions_to_change = n_step(img, len_line, len_row)    
-        for position in n_postitions_to_change:
-            i, j = position
-            data[i, j] = 0
-    return data
+    nb_line = len(img)
+    nb_row = len(img[0])
+    for i in range(n):
+        copy_img = deepcopy(img)
+        delete_first_last_line(i, img, nb_line, nb_row)
+        # delete the first and last line and check all the other positions
+        for elem_line in range(i+1, nb_line-i-1):
+            img[elem_line][i] = 0
+            img[elem_line][-1-i] = 0
+            check_positions(nb_row, i, elem_line, img, copy_img)
+
+    return img
+
 
 zoom = 0.5
 img = load_pbm("cross.pbm")

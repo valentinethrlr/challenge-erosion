@@ -2,6 +2,7 @@ import unittest
 import os
 
 from utils import img2ascii, load_pbm, erosion
+from data import *
 
 img = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
